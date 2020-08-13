@@ -49,8 +49,7 @@
                     </div>
                     <div style = "padding-top: 35px" class = "row">
                         <div class="col-md-3 offset-md-2">
-                            <a class = "btn btn-primary" href = "{{ route('home') }}">
-                                <!-- ROUTE TEMPERATURES -->
+                            <a class = "btn btn-primary" href = "{{ route('temperature') }}">
                                 Get temperatures
                             </a>
                         </div>
