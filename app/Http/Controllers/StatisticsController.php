@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class GetTemperatureController extends Controller
+class StatisticsController extends Controller
 {
     public function __construct()
     {
@@ -13,6 +13,6 @@ class GetTemperatureController extends Controller
 
     public function index()
     {
-        return view('getTemperature');
+        return view('statistics');
     }
 }

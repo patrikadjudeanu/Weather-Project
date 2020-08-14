@@ -19,6 +19,15 @@ Route::get('/welcome', function () {
     return view('welcome');
 })->name('welcome');
 
+Route::get('/logout', function(){
+
+    Auth::logout();
+    
+    return redirect('/welcome');
+})->name('logout');
+
 Route::get('/', 'HomeController@index')->name('home');
 
-Route::get('/temperature', 'getTemperatureController@index')->name('temperature');
+Route::get('/temperature', 'GetTemperatureController@index')->name('temperature');
+
+Route::get('/statistics', 'StatisticsController@index')->name('statistics');

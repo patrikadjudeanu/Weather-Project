@@ -11,8 +11,7 @@
                             Hello, {{ Auth::user()->name }}!
                         </div>
                         <div style = "padding-right:10px">
-                            <a class = "btn btn-danger" href = "{{ route('home') }}">
-                            <!-- ROUTE LOGOUT -->
+                            <a class = "btn btn-danger" href = "{{ route('logout') }}">
                                 Log out
                             </a>
                         </div>
@@ -54,8 +53,7 @@
                             </a>
                         </div>
                         <div class="col-md-3 offset-md-2">
-                            <a class = "btn btn-primary" href = "{{ route('home') }}">
-                                <!-- ROUTE STATISTICS -->
+                            <a class = "btn btn-primary" href = "{{ route('statistics') }}">
                                 Statistics
                             </a>
                         </div>
