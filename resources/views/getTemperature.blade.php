@@ -12,23 +12,23 @@
                 <div class="card-body" style = "font-size:20px; padding-top:40px">
                     <div class = "row">
                         <div class = "col">
-                            <form>
+                            <form action = "{{ route('getTemperature') }}" method = "POST">
                                 @csrf
                                 <div class = "row">
-                                    <div class = "col-3">
+                                    <div class = "col">
                                         <label for = "latInput">Enter latitude:</label>
                                     </div>
                                     <div class = "col">
-                                        <input type = "number" step = "0.1" id = "latInput" class = "form-control-sm">
+                                        <input type = "number" name = "latInput" step = "0.1" id = "latInput" class = "form-control-sm" min = -90 max = 90>
                                     </div>
                                 </div>
                                 <br>
                                 <div class = "row">
-                                    <div class = "col-3">
+                                    <div class = "col">
                                         <label for = "lonInput">Enter longitude:</label>
                                     </div>
                                     <div class = "col">
-                                        <input type = "number" step = "0.1" id = "lonInput" class = "form-control-sm">
+                                        <input type = "number" name = "lonInput" step = "0.1" id = "lonInput" class = "form-control-sm" min = -180 max = 180>
                                     </div>
                                 </div>
                                 <div style = "padding-left:100px; padding-top:20px">
@@ -36,12 +36,16 @@
                                 </div>
                             </form>
                         </div>
+                        @if(isset($temp))
                         <div class = "col">
-                            City:
-                            
-                            Temperature:
-                            
+                            <div style = "text-align:center">
+                                <b>City:</b><br>
+                                {{ $location }}<br>
+                                <b>Temperature:</b><br>    
+                                {{ $temp }}       
+                            </div>
                         </div>
+                        @endif
                     </div>
                     <div class = "d-flex justify-content-center" style = "padding-top: 50px">
                         <a href = "{{ route('home') }}">

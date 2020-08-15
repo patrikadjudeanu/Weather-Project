@@ -19,6 +19,7 @@ class CreateTemperaturesTable extends Migration
             $table->decimal('latitude', 3, 1);
             $table->decimal('longitude', 4, 1);
             $table->decimal('temperature', 3, 1);
+            $table->dropColumn('updated_at');
         });
     }
 

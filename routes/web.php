@@ -32,4 +32,4 @@ Route::get('/temperature', 'GetTemperatureController@index')->name('temperature'
 
 Route::get('/statistics', 'StatisticsController@index')->name('statistics');
 
-Route::post('/temperature', 'GetTemperatureController@store')->name('temperature');
+Route::post('/temperature', 'GetTemperatureController@store')->name('getTemperature');
