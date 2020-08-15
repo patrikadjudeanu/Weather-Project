@@ -31,3 +31,5 @@ Route::get('/', 'HomeController@index')->name('home');
 Route::get('/temperature', 'GetTemperatureController@index')->name('temperature');
 
 Route::get('/statistics', 'StatisticsController@index')->name('statistics');
+
+Route::post('/temperature', 'GetTemperatureController@store')->name('temperature');
