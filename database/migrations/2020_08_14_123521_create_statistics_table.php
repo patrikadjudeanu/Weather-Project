@@ -20,6 +20,7 @@ class CreateStatisticsTable extends Migration
             $table->decimal('longitude', 4, 1);
             $table->string('city_name', 50);
             $table->decimal('medianTemperature', 3, 1);
+            $table->dropColumn('updated_at');   
         });
     }
 

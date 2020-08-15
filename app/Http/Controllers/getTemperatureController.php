@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Temperature;
+use App\Http\Controllers\GetTemperatureController;
 
 class GetTemperatureController extends Controller
 {
-    private $key = 'b541d7219b6c468eb87fea42f3c34e9b';
-
     public function __construct()
     {
         $this->middleware('auth');
@@ -16,24 +16,52 @@ class GetTemperatureController extends Controller
     public function index()
     {
         return view('getTemperature');
-    }
+    }   
 
     public function store()
     {
         $tempEntry = new Temperature();
-        $tempEntry->latitude = request('latitude');
-        $tempEntry->longitude = request('longitude');
+        $tempEntry->latitude = request('latInput');
+        $tempEntry->longitude = request('lonInput');
 
-        $tempEntry->temperature = request('temperature');
-
+        if($tempEntry->latitude > 90)
+            $tempEntry->latitude %= 90;
+        else if($tempEntry->latitude < -90)
+            $tempEntry->latitude %= -90;
+        
+        if($tempEntry->longitude > 180)
+            $tempEntry->longitude %= 180;
+        else if($tempEntry->longitude < -180)
+            $tempEntry->longitude %= -180;   
+        
+        $tempEntry->temperature = GetTemperatureController::getData($tempEntry->latitude, $tempEntry->longitude)->temp;       
 
         $tempEntry->save();
+
+        $location = GetTemperatureController::getData($tempEntry->latitude, $tempEntry->longitude)->city_name;
+
+
+        return view('getTemperature', ['location' => $location,
+                                        'temp' => $tempEntry->temperature]);
     }
 
-    public static function getTemperature($lat, $long)
-    {
+    public static function getData($lat, $long)
+    { 
+        //getting cURL data with guzzle
+
         $endpoint =  'https://api.weatherbit.io/v2.0/current';
-        $client = new \GuzzleHttp\Client();
+        $client = new \GuzzleHttp\Client(['verify'  => false]);
 
+        $response = $client->request('GET', $endpoint, ['query' => [
+            'lat' => $lat, 
+            'lon' => $long,
+            'key' => config('apiKeys.weatherbitKey')
+        ]]);
+
+        $statusCode = $response->getStatusCode();
+        $content = json_decode($response->getBody(), false);
+        
+        return $content->data['0'];
     }
+
 }
