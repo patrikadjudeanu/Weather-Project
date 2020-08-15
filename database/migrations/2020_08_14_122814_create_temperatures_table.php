@@ -18,7 +18,6 @@ class CreateTemperaturesTable extends Migration
             $table->timestamps();
             $table->decimal('latitude', 3, 1);
             $table->decimal('longitude', 4, 1);
-            $table->string('city_name', 50);
             $table->decimal('temperature', 3, 1);
         });
     }
