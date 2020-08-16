@@ -41,14 +41,14 @@ class GetTemperatureController extends Controller
         $location = GetTemperatureController::getData($tempEntry->latitude, $tempEntry->longitude)->city_name;
 
 
-        return view('getTemperature', ['location' => $location,
+        return view('statistics', ['location' => $location,
                                         'temp' => $tempEntry->temperature]);
     }
 
     public static function getData($lat, $long)
     { 
         //getting cURL data with guzzle
-
+        //if there are no 'temperatures' entries, median temperature will be calculated for the last year
         $endpoint =  'https://api.weatherbit.io/v2.0/current';
         $client = new \GuzzleHttp\Client(['verify'  => false]);
 
