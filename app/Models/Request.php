@@ -31,14 +31,20 @@ class Request extends Model
             $this->longitude %= -180; 
     }
 
-    public static function getLastRequestDate($location)
+    public static function getLastTempRequestDate($location)
     {
-        $counter = Request::where('location', $location)->count();
+        $counter = Request::where([
+                                     ['location', '=', $location],
+                                     ['requestable_type', '=', 'App\Models\TemperatureRequest']
+                                  ])->count();
 
         if($counter == 0)
             return null;
 
-        $lastEntryDate = strtotime(Request::latest()->first()->created_at);
+        $lastEntryDate = strtotime(Request::where([
+                                                      ['location', '=', $location],
+                                                      ['requestable_type', '=', 'App\Models\TemperatureRequest']
+                                                  ])->latest()->first()->created_at);
 
         return date('Y-m-d', $lastEntryDate);
     }

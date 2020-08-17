@@ -35,18 +35,20 @@
                                 </div>
                             </form>
                         </div>
-                        @if(session()->exists('temp'))
+                        @if(session()->exists('requestNotFound') && session()->get('requestNotFound') == true)
+                        <div class = "col">
+                            <div class = "d-flex justify-content-center" style = "color: red; text-align:center; padding-top:20px">
+                                Unable to retrieve data.<br>
+                                There are no past temperature requests for that location.
+                            </div>
+                        </div>
+                        @elseif(session()->exists('temp'))
                         <div class = "col">
                             <div style = "text-align:center">
                                 <b>City:</b><br>
                                 {{ Session::pull('city') }}<br>
                                 <b>Last request:</b><br>   
-                                @if(session()->exists('requestNotFound') && session()->get('requestNotFound') == true)
-                                    Never<br>
-                                    (Date auto-set to today)<br>
-                                @else  
-                                    {{ Session::pull('lastRequest') }}<br>      
-                                @endif
+                                {{ Session::pull('lastRequest') }}<br>      
                                 <b>Avg. temperature:</b><br>
                                 {{ Session::pull('temp') }}
                             </div>

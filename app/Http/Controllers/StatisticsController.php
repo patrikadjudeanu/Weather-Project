@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\StatisticRequest;
 use App\Models\TemperatureRequest;
@@ -15,8 +14,8 @@ class StatisticsController extends Controller
     {
         $this->middleware('auth');
     }
-
-    //TODO: FIX BUG!
+    
+    
 
     public function index(Request $request)
     {
@@ -24,7 +23,6 @@ class StatisticsController extends Controller
             return view('statistics');
         else if($request->isMethod('post'))
         {
-            $fromDate = Carbon::now()->format('Y-m-d');
             $toDate = date('Y-m-d');
 
             $req = new Req();
@@ -34,11 +32,14 @@ class StatisticsController extends Controller
 
             $weatherData = $req->getWeatherData();
             $req->location = $weatherData->city_name . ', ' . $weatherData->country_code;
-            if(Req::getLastRequestDate($req->location) != null)
-                $fromDate = Req::getLastRequestDate($req->location);
+            if(Req::getLastTempRequestDate($req->location) != null)
+                $fromDate = Req::getLastTempRequestDate($req->location);
             else
+            {
                 Session::flash('requestNotFound', true);
-            
+                return redirect()->back();
+            }
+
             $statRequest = new StatisticRequest();
             $statRequest->start_date = $fromDate;
             $statRequest->end_date = $toDate;
