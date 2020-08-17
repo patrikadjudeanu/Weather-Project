@@ -13,7 +13,6 @@ class Request extends Model
     const UPDATED_AT = null;
 
    
-
     public function requestable()
     {
         return $this->morphTo();

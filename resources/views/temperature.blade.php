@@ -12,22 +12,14 @@
                 <div class="card-body" style = "font-size:20px; padding-top:40px">
                     <div class = "row">
                         <div class = "col-6">
-<<<<<<< HEAD:resources/views/temperature.blade.php
                             <form action = "{{ route('temperature') }}" method = "POST">
-=======
-                            <form action = "{{ route('getTemperature') }}" method = "POST">
->>>>>>> cd3356a54eb500cb32a61dac1c40df59fef148b3:resources/views/getTemperature.blade.php
                                 @csrf
                                 <div class = "row">
                                     <div class = "col">
                                         <label for = "latInput">Enter latitude:</label>
                                     </div>
                                     <div class = "col">
-<<<<<<< HEAD:resources/views/temperature.blade.php
-                                        <input type = "number" name = "latInput" step = "0.1" id = "latInput" class = "form-control-sm" min = -90 max = 90 value = 0>
-=======
-                                        <input type = "number" name = "latInput" step = "0.1" id = "latInput" class = "form-control-sm" min = -90 max = 90 required>
->>>>>>> cd3356a54eb500cb32a61dac1c40df59fef148b3:resources/views/getTemperature.blade.php
+                                        <input type = "number" name = "latInput" step = "0.1" id = "latInput" class = "form-control-sm" min = -90 max = 90 value = 0 required>
                                     </div>
                                 </div>
                                 <br>
@@ -36,11 +28,7 @@
                                         <label for = "lonInput">Enter longitude:</label>
                                     </div>
                                     <div class = "col">
-<<<<<<< HEAD:resources/views/temperature.blade.php
-                                        <input type = "number" name = "lonInput" step = "0.1" id = "lonInput" class = "form-control-sm" min = -180 max = 180 value = 0>
-=======
-                                        <input type = "number" name = "lonInput" step = "0.1" id = "lonInput" class = "form-control-sm" min = -180 max = 180 required>
->>>>>>> cd3356a54eb500cb32a61dac1c40df59fef148b3:resources/views/getTemperature.blade.php
+                                        <input type = "number" name = "lonInput" step = "0.1" id = "lonInput" class = "form-control-sm" min = -180 max = 180 value = 0 required>
                                     </div>
                                 </div>
                                 <div style = "padding-left:100px; padding-top:20px">

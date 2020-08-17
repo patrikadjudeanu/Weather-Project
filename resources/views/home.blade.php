@@ -19,30 +19,14 @@
                 </div>
 
                 <div class="card-body" style = "font-size:20px; padding-top:40px">
-                    <div>
-                        <b>Your current location:</b>
-                    </div>
-                    <div>
-                        <p  id = "location"></p>
-                    </div>
-                    <div class = "row"   style = "padding-top:10px">
+                    <div class = "row" style = "padding-left: 80px">
                         <div class = "col">
-                            <div>
-                                <b>Current temperature:</b>
-                            </div>
-                            <div>
-                                <!-- WEAHER API -->
-                                TODO WEATHER API
-                            </div>
+                            <b>Your current location:</b><br>
+                            {{ session('currentLocation') }}
                         </div>
                         <div class = "col">
-                            <div>
-                                Updated at:
-                                <!-- WEATHER API UPDATE TIMESTAMP -->TODO Timestamp
-                            </div>
-                            <div>
-                                <button class = "btn btn-warning btn-sm" onclick = "getLocation()">Reset</button>
-                            </div>
+                            <b>Current temperature:</b><br>
+                            {{ session('currentTemperature') }}
                         </div>
                     </div>
                     <div style = "padding-top: 35px" class = "row">
