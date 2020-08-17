@@ -41,9 +41,9 @@
                                 <b>City:</b><br>
                                 {{ Session::pull('city') }}<br>
                                 <b>Last request:</b><br>   
-                                @if(session()->exists('requestNotFound') && strcmp(session()->get('entryNotFound'), 'true') == 0)
+                                @if(session()->exists('requestNotFound') && session()->get('requestNotFound') == true)
                                     Never<br>
-                                    (Last request date auto-set to 2020-01-01)<br>
+                                    (Date auto-set to today)<br>
                                 @else  
                                     {{ Session::pull('lastRequest') }}<br>      
                                 @endif
