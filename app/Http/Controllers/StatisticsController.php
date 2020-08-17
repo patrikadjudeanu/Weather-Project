@@ -24,8 +24,7 @@ class StatisticsController extends Controller
             return view('statistics');
         else if($request->isMethod('post'))
         {
-            //TODO: FIX BUG
-            $fromDate = '2020-01-01';
+            $fromDate = Carbon::now()->format('Y-m-d');
             $toDate = date('Y-m-d');
 
             $req = new Req();
@@ -36,10 +35,7 @@ class StatisticsController extends Controller
             $weatherData = $req->getWeatherData();
             $req->location = $weatherData->city_name . ', ' . $weatherData->country_code;
             if(Req::getLastRequestDate($req->location) != null)
-            {
                 $fromDate = Req::getLastRequestDate($req->location);
-                Session::flash('lastRequest', $fromDate);
-            }
             else
                 Session::flash('requestNotFound', true);
             
@@ -51,8 +47,9 @@ class StatisticsController extends Controller
             $req->temperature = $statRequest->getMedianTemp($req);
             $statRequest->requests()->save($req);
 
-            Session::flash('city', $req->longitude); 
-            Session::flash('temp', $req->latitude); 
+            Session::flash('lastRequest', $fromDate);
+            Session::flash('city', $req->location); 
+            Session::flash('temp', $req->temperature); 
             return redirect()->back();
         }
     }

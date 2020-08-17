@@ -19,25 +19,18 @@
                 </div>
 
                 <div class="card-body" style = "font-size:20px; padding-top:40px">
-                    <div class = "row" style = "padding-left: 80px">
-                        <div class = "col">
-                            <b>Your current location:</b><br>
-                            {{ session('currentLocation') }}
-                        </div>
-                        <div class = "col">
-                            <b>Current temperature:</b><br>
-                            {{ session('currentTemperature') }}
-                        </div>
+                    <div class = "d-flex justify-content-center">
+                        <b>Choose what to do:</b>
                     </div>
-                    <div style = "padding-top: 35px" class = "row">
-                        <div class="col-md-3 offset-md-2">
+                    <div style = "padding-top: 35px; padding-right:35px" class = "row">
+                        <div class="col-md-3 offset-md-3">
                             <a class = "btn btn-primary" href = "{{ route('temperature') }}">
                                 Get temperatures
                             </a>
                         </div>
-                        <div class="col-md-3 offset-md-2">
+                        <div class="col-md-3 offset-md-1">
                             <a class = "btn btn-primary" href = "{{ route('statistics') }}">
-                                Statistics
+                                Get statistics
                             </a>
                         </div>
                     </div>
