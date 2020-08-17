@@ -19,7 +19,7 @@
                                         <label for = "latInput">Enter latitude:</label>
                                     </div>
                                     <div class = "col">
-                                        <input type = "number" name = "latInput" step = "0.1" id = "latInput" class = "form-control-sm" min = -90 max = 90 value = 0 required>
+                                        <input type = "number" name = "latInput" step = "0.1" id = "latInput" class = "form-control-sm" min = -90 max = 90 required>
                                     </div>
                                 </div>
                                 <br>
@@ -28,7 +28,7 @@
                                         <label for = "lonInput">Enter longitude:</label>
                                     </div>
                                     <div class = "col">
-                                        <input type = "number" name = "lonInput" step = "0.1" id = "lonInput" class = "form-control-sm" min = -180 max = 180 value = 0 required>
+                                        <input type = "number" name = "lonInput" step = "0.1" id = "lonInput" class = "form-control-sm" min = -180 max = 180 required>
                                     </div>
                                 </div>
                                 <div style = "padding-left:100px; padding-top:20px">
@@ -36,7 +36,13 @@
                                 </div>
                             </form>
                         </div>
-                        @if(session()->exists('temp'))
+                        @if(session()->exists('errorMsg'))
+                        <div class = "col">
+                            <div class = "d-flex justify-content-center" style = "color: red; text-align:center; padding-top:20px">
+                                {{ Session::pull('errorMsg') }}
+                            </div>
+                        </div>
+                        @elseif(session()->exists('temp'))
                         <div class = "col">
                             <div style = "text-align:center">
                                 <b>City:</b><br>

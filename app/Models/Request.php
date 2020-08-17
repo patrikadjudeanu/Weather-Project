@@ -2,16 +2,16 @@
 
 namespace App\Models;
 
+use App\Exceptions\RequestNotFoundException;
+use App\Exceptions\InvalidDataException;
+use App\Exceptions\BadResponseException;
 use Illuminate\Database\Eloquent\Model;
 
 class Request extends Model
 {
     protected $fillable = ['latitude', 'longitude', 'temperature', 'location', 'requestable_id', 'requestable_type'];
-
     protected  $table = ('requests');
-
     const UPDATED_AT = null;
-
    
     public function requestable()
     {
@@ -20,6 +20,9 @@ class Request extends Model
 
     public function checkLocation()
     {
+        if(!is_numeric($this->latitude) || !is_numeric($this->longitude))
+            throw new InvalidDataException();
+
         if($this->latitude > 90)
             $this->latitude %= 90;
         else if($this->latitude < -90)
@@ -39,7 +42,7 @@ class Request extends Model
                                   ])->count();
 
         if($counter == 0)
-            return null;
+            throw new RequestNotFoundException();
 
         $lastEntryDate = strtotime(Request::where([
                                                       ['location', '=', $location],
@@ -51,19 +54,22 @@ class Request extends Model
 
     public function getWeatherData()
     { 
+
+        //TODO: Exception handling
         $endpoint =  'https://api.weatherbit.io/v2.0/current';
+
         $client = new \GuzzleHttp\Client(['verify'  => false]);
 
         $response = $client->request('GET', $endpoint, ['query' => [
-            'lat' => $this->latitude , 
-            'lon' => $this->longitude ,
-            'key' => config('apiKeys.weatherbitKey')
+                    'lat' => $this->latitude , 
+                    'lon' => $this->longitude ,
+                    'key' => config('apiKeys.weatherbitKey')
         ]]);
 
         $statusCode = $response->getStatusCode();
         $content = json_decode($response->getBody(), false);
-
-        return $content->data['0'];
+    
+        return $content->data['0'];  
     }
 
 }

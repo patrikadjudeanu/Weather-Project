@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Request;
+use App\Exceptions\InvalidDataException;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -22,6 +23,8 @@ class StatisticRequest extends Model
     {
         $carbonFromDate = Carbon::parse($this->start_date);
         $carbonToDate = Carbon::parse($this->end_date);
+        if($carbonFromDate->gt($carbonToDate))
+            throw new InvalidDataException();
 
         $totalTemp = 0;
         $days = 0;

@@ -23,35 +23,40 @@ class StatisticsController extends Controller
             return view('statistics');
         else if($request->isMethod('post'))
         {
-            $toDate = date('Y-m-d');
-
-            $req = new Req();
-            $req->latitude = request('latInput');
-            $req->longitude = request('lonInput');
-            $req->checkLocation();
-
-            $weatherData = $req->getWeatherData();
-            $req->location = $weatherData->city_name . ', ' . $weatherData->country_code;
-            if(Req::getLastTempRequestDate($req->location) != null)
-                $fromDate = Req::getLastTempRequestDate($req->location);
-            else
+            try
             {
-                Session::flash('requestNotFound', true);
+                $toDate = date('Y-m-d');
+
+                $req = new Req();
+                $req->latitude = request('latInput');
+                $req->longitude = request('lonInput');
+                $req->checkLocation();
+
+                $weatherData = $req->getWeatherData();
+                $req->location = $weatherData->city_name . ', ' . $weatherData->country_code;
+                
+                $fromDate = Req::getLastTempRequestDate($req->location);
+
+                $statRequest = new StatisticRequest();
+                $statRequest->start_date = $fromDate;
+                $statRequest->end_date = $toDate;
+                $statRequest->save();
+
+                $req->temperature = $statRequest->getMedianTemp($req);
+                $statRequest->requests()->save($req);
+
+                Session::flash('lastRequest', $fromDate);
+                Session::flash('city', $req->location); 
+                Session::flash('temp', $req->temperature); 
+            }
+            catch(\Exception $ex)
+            {
+                Session::flash('errorMsg', $ex->errorMessage());
+            }
+            finally
+            {
                 return redirect()->back();
             }
-
-            $statRequest = new StatisticRequest();
-            $statRequest->start_date = $fromDate;
-            $statRequest->end_date = $toDate;
-            $statRequest->save();
-
-            $req->temperature = $statRequest->getMedianTemp($req);
-            $statRequest->requests()->save($req);
-
-            Session::flash('lastRequest', $fromDate);
-            Session::flash('city', $req->location); 
-            Session::flash('temp', $req->temperature); 
-            return redirect()->back();
         }
     }
 
