@@ -23,8 +23,7 @@
                         <b>Your current location:</b>
                     </div>
                     <div>
-                        <!-- GEOLOCATION API -->
-                        TODO GEO API
+                        <p  id = "location"></p>
                     </div>
                     <div class = "row"   style = "padding-top:10px">
                         <div class = "col">
@@ -42,7 +41,7 @@
                                 <!-- WEATHER API UPDATE TIMESTAMP -->TODO Timestamp
                             </div>
                             <div>
-                                <button class = "btn btn-info btn-sm" id = "resetCurWeatherBtn">Reset</button>
+                                <button class = "btn btn-warning btn-sm" onclick = "getLocation()">Reset</button>
                             </div>
                         </div>
                     </div>

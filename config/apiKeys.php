@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'weatherbitKey' => env('WEATHERBIT_KEY','b541d7219b6c468eb87fea42f3c34e9b')
+    'weatherbitKey' => env('WEATHERBIT_KEY','51d4cec51461432bad4668f87666419f')
 ];

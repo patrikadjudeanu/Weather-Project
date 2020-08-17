@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateStatisticsTable extends Migration
+class CreateRequestsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,16 @@ class CreateStatisticsTable extends Migration
      */
     public function up()
     {
-        Schema::create('statistics', function (Blueprint $table) {
+        Schema::create('requests', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->decimal('latitude', 3, 1);
             $table->decimal('longitude', 4, 1);
-            $table->string('city_name', 50);
-            $table->decimal('medianTemperature', 3, 1);
-            $table->dropColumn('updated_at');   
+            $table->decimal('temperature', 3, 1);
+            $table->timestamps();
+            $table->dropColumn('updated_at'); 
+            $table->string('location');
+            $table->integer('requestable_id')->unsigned();
+            $table->string('requestable_type');
         });
     }
 
@@ -31,6 +33,6 @@ class CreateStatisticsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('statistics');
+        Schema::dropIfExists('requests');
     }
 }
