@@ -20,27 +20,36 @@ class TemperatureController extends Controller
             return view('temperature');
         else if($request->isMethod('post'))
         {
-            $tempRequest = new TemperatureRequest();
-            $tempRequest->save();
+            try
+            {
+                $latitude = request('latInput');
+                $longitude = request('lonInput');
 
-            $latitude = request('latInput');
-            $longitude = request('lonInput');
+                $req = new Req();
+                $req->latitude = $latitude;
+                $req->longitude = $longitude;
+                $req->checkLocation();
 
-            $req = new Req();
-            $req->latitude = $latitude;
-            $req->longitude = $longitude;
-            $req->checkLocation();
+                $weatherData = $req->getWeatherData();
+                $req->temperature = $weatherData->temp;
+                $req->location = $weatherData->city_name . ', ' . $weatherData->country_code;
 
-            $weatherData = $req->getWeatherData();
-            $req->temperature = $weatherData->temp;
-            $req->location = $weatherData->city_name . ', ' . $weatherData->country_code;
-
-            $tempRequest->requests()->save($req);
+                $tempRequest = new TemperatureRequest();
+                $tempRequest->save();
+                $tempRequest->requests()->save($req);
 
 
-            Session::flash('city', $req->location); 
-            Session::flash('temp', $req->temperature); 
-            return redirect()->back();
+                Session::flash('city', $req->location); 
+                Session::flash('temp', $req->temperature);
+            } 
+            catch(\Exception $ex)
+            {
+                Session::flash('errorMsg', $ex->errorMessage());
+            }
+            finally
+            {
+                return redirect()->back();
+            }
         }
     }   
 
