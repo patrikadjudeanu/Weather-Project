@@ -11,15 +11,15 @@
 
                 <div class="card-body" style = "font-size:20px; padding-top:40px">
                     <div class = "row">
-                        <div class = "col">
-                            <form action = "{{ route('getTemperature') }}" method = "POST">
+                        <div class = "col-6">
+                            <form action = "{{ route('temperature') }}" method = "POST">
                                 @csrf
                                 <div class = "row">
                                     <div class = "col">
                                         <label for = "latInput">Enter latitude:</label>
                                     </div>
                                     <div class = "col">
-                                        <input type = "number" name = "latInput" step = "0.1" id = "latInput" class = "form-control-sm" min = -90 max = 90>
+                                        <input type = "number" name = "latInput" step = "0.1" id = "latInput" class = "form-control-sm" min = -90 max = 90 value = 0>
                                     </div>
                                 </div>
                                 <br>
@@ -28,7 +28,7 @@
                                         <label for = "lonInput">Enter longitude:</label>
                                     </div>
                                     <div class = "col">
-                                        <input type = "number" name = "lonInput" step = "0.1" id = "lonInput" class = "form-control-sm" min = -180 max = 180>
+                                        <input type = "number" name = "lonInput" step = "0.1" id = "lonInput" class = "form-control-sm" min = -180 max = 180 value = 0>
                                     </div>
                                 </div>
                                 <div style = "padding-left:100px; padding-top:20px">
@@ -36,13 +36,13 @@
                                 </div>
                             </form>
                         </div>
-                        @if(isset($temp))
+                        @if(session()->exists('temp'))
                         <div class = "col">
                             <div style = "text-align:center">
                                 <b>City:</b><br>
-                                {{ $location }}<br>
+                                {{ Session::pull('city') }}<br>
                                 <b>Temperature:</b><br>    
-                                {{ $temp }}       
+                                {{ Session::pull('temp') }}       
                             </div>
                         </div>
                         @endif
