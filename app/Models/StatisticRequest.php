@@ -30,7 +30,10 @@ class StatisticRequest extends Model
         $days = 0;
         while($carbonFromDate->lte($carbonToDate))
         {
+            //Assuming getWeatherData() can return weather data for a specific day
             $totalTemp += $req->getWeatherData()->temp;
+
+
             $days++;
             $carbonFromDate->addDays(1);
         }
@@ -38,4 +41,34 @@ class StatisticRequest extends Model
         return $totalTemp/$days;
     }
 
+   
+    /*
+    getMedianTemp() assuming we have temperature request data for all the days since the last statisticRequest day:
+
+    public function getMedianTemp(Request $req)
+    {
+        $carbonFromDate = Carbon::parse($this->start_date);
+        $carbonToDate = Carbon::parse($this->end_date);
+
+        if($carbonFromDate->gt($carbonToDate))
+            throw new InvalidDataException();
+
+        
+        $totalTemp = 0;
+        $days = 0;
+        while($carbonFromDate->lte($carbonToDate))
+        {
+            $totalTemp += Request::where([
+                                            ['location', '=', $this->location],
+                                            ['requestable_type', '=', 'App\Models\StatisticRequest'],
+                                            ['created_at', '=', $carbonFromDate]
+                                        ])->first()->temperature;
+    
+            $days++;
+            $carbonFromDate->addDays(1);
+        }
+
+        return $totalTemp/$days;
+    }
+    */
 }

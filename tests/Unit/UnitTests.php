@@ -44,4 +44,12 @@ class ExampleTest extends TestCase
 
         $request->getLastTempRequestDate($location);
     }
+
+    /**  
+     * TODO: API TESTING
+     */
+    public function test_api()
+    {
+
+    }
 }

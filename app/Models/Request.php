@@ -8,6 +8,7 @@ use App\Exceptions\BadResponseException;
 use App\Exceptions\APIException;
 use Illuminate\Database\Eloquent\Model;
 use \GuzzleHttp\Exception\RequestException;
+use App\Models\TemperatureRequest;
 
 class Request extends Model
 {
@@ -38,11 +39,12 @@ class Request extends Model
 
     public static function getLastTempRequestDate($location)
     {
+        
         $counter = Request::where([
                                      ['location', '=', $location],
                                      ['requestable_type', '=', 'App\Models\TemperatureRequest']
                                   ])->count();
-
+        
         if($counter == 0)
             throw new RequestNotFoundException();
 
@@ -54,23 +56,26 @@ class Request extends Model
         return date('Y-m-d', $lastEntryDate);
     }
 
+
+    //Assuming getWeatherData() can return weather data for a specific day
     public function getWeatherData()
     { 
-        try{
-        $endpoint =  'https://api.weatherbit.io/v2.0/current';
+        try
+        {
+            $endpoint =  'https://api.weatherbit.io/v2.0/current';
 
-        $client = new \GuzzleHttp\Client(['verify'  => false]);
+            $client = new \GuzzleHttp\Client(['verify'  => false]);
 
-        $response = $client->request('GET', $endpoint, ['query' => [
-                    'lat' => $this->latitude , 
-                    'lon' => $this->longitude ,
-                    'key' => config('apiKeys.weatherbitKey')
-        ]]);
+            $response = $client->request('GET', $endpoint, ['query' => [
+                        'lat' => $this->latitude , 
+                        'lon' => $this->longitude ,
+                        'key' => config('apiKeys.weatherbitKey')
+            ]]);
 
-        $statusCode = $response->getStatusCode();
-        $content = json_decode($response->getBody(), false);
-    
-        return $content->data['0'];  
+            $statusCode = $response->getStatusCode();
+            $content = json_decode($response->getBody(), false);
+        
+            return $content->data['0'];  
         }
         catch(RequestException $ex)
         {
