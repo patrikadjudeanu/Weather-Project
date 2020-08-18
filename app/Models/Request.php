@@ -5,7 +5,9 @@ namespace App\Models;
 use App\Exceptions\RequestNotFoundException;
 use App\Exceptions\InvalidDataException;
 use App\Exceptions\BadResponseException;
+use App\Exceptions\APIException;
 use Illuminate\Database\Eloquent\Model;
+use \GuzzleHttp\Exception\RequestException;
 
 class Request extends Model
 {
@@ -31,7 +33,7 @@ class Request extends Model
         if($this->longitude > 180)
             $this->longitude %= 180;
         else if($this->longitude < -180)
-            $this->longitude %= -180; 
+            $this->longitude %= -180;
     }
 
     public static function getLastTempRequestDate($location)
@@ -54,8 +56,7 @@ class Request extends Model
 
     public function getWeatherData()
     { 
-
-        //TODO: Exception handling
+        try{
         $endpoint =  'https://api.weatherbit.io/v2.0/current';
 
         $client = new \GuzzleHttp\Client(['verify'  => false]);
@@ -70,6 +71,11 @@ class Request extends Model
         $content = json_decode($response->getBody(), false);
     
         return $content->data['0'];  
+        }
+        catch(RequestException $ex)
+        {
+            throw new APIException();
+        }
     }
 
 }
