@@ -6,6 +6,7 @@ use App\Models\TemperatureRequest;
 use App\Models\Request as Req;
 use Illuminate\Http\Request;
 use \Session;
+use App\Exceptions\APIException;
 
 class TemperatureController extends Controller
 {
