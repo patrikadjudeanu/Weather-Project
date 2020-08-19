@@ -46,10 +46,36 @@ class ExampleTest extends TestCase
     }
 
     /**  
-     * TODO: API TESTING
+     * @test
      */
     public function test_api()
     {
+        $request = factory(App\Models\Request::class)->make([
+            'latitude' => 'abc',
+            'longitude' => 23
+        ]);
 
+        $this->expectException(\APIException::class);
+        $request->getWeatherData();
+    }
+
+    /**
+     * @test
+     */
+    public function median_temp_invalid_date()
+    {
+        $statRequest = factory(App\Models\StatisticRequest::class)->make([
+            'start_date' => '23-08-2012',
+            'end_date' => '22-07-2009'
+        ]);
+
+        $request = factory(App\Models\Request::class)->make([
+            'latitude' => 65,
+            'longitude' => 49
+        ]); 
+
+
+        $this->expectException(\InvalidDataException::class);
+        $statRequest->getMedianTemp($request);
     }
 }
