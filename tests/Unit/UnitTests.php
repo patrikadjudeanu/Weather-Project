@@ -7,7 +7,7 @@ use App\Models\Request;
 use App\Exceptions;
 use DatabaseMigrations;
 
-class ExampleTest extends TestCase
+class UnitTest extends TestCase
 {
     /**  
      * @dataProvider locationParamsProvider

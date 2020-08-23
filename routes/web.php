@@ -28,8 +28,13 @@ Route::get('/logout', function(){
 
 Route::get('/', 'HomeController@index')->name('home');
 
-Route::match(['get', 'post'], '/temperature', 'TemperatureController@index')->name('temperature');
+Route::get('/temperature', 'TemperatureController@index')->name('temperature');
 
-Route::match(['get', 'post'], '/statistics', 'StatisticsController@index')->name('statistics');
+Route::post('/temperature', 'TemperatureController@getTemperature')->name('getTemperature');
+
+Route::get('/statistics', 'StatisticsController@index')->name('statistics');
+
+Route::post('/statistics', 'StatisticsController@getStatistics')->name('getStatistics');
+
 
 

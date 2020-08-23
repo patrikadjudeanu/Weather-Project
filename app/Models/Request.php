@@ -26,6 +26,9 @@ class Request extends Model
         if(!is_numeric($this->latitude) || !is_numeric($this->longitude))
             throw new InvalidDataException();
 
+        round($this->latitude, 1);
+        round($this->longitude, 1);
+
         if($this->latitude > 90)
             $this->latitude %= 90;
         else if($this->latitude < -90)

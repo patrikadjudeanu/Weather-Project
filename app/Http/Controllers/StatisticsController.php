@@ -7,6 +7,7 @@ use App\Models\StatisticRequest;
 use App\Models\TemperatureRequest;
 use App\Models\Request as Req;
 use \Session;
+use Carbon\Carbon;
 
 class StatisticsController extends Controller
 {
@@ -15,48 +16,48 @@ class StatisticsController extends Controller
         $this->middleware('auth');
     }
     
-    
 
-    public function index(Request $request)
+    public function index()
     {
-        if ($request->isMethod('get'))
-            return view('statistics');
-        else if($request->isMethod('post'))
+        return view('statistics');
+    }   
+
+    public function getStatistics()
+    {
+        try
         {
-            try
-            {
-                $toDate = date('Y-m-d');
+            $req = new Req();
+            $req->latitude = request('latInput');
+            $req->longitude = request('lonInput');
+            $req->checkLocation();
 
-                $req = new Req();
-                $req->latitude = request('latInput');
-                $req->longitude = request('lonInput');
-                $req->checkLocation();
+            $data = $req->getWeatherData();
+            $req->location = $data->city_name . ', ' . $data->country_code;
 
-                $weatherData = $req->getWeatherData();
-                $req->location = $weatherData->city_name . ', ' . $weatherData->country_code;
-                
-                $fromDate = Req::getLastTempRequestDate($req->location);
+            $fromDate = Req::getLastTempRequestDate($req->location);
+            $toDate = date('Y-m-d');
+            
+            $statRequest = new StatisticRequest();
+            $statRequest->start_date = $fromDate;
+            $statRequest->end_date = $toDate;
+            
+            $medianTemp = round($statRequest->getMedianTemp($req), 1);
+            $req->temperature = $medianTemp;
+            
+            $statRequest->save();
+            $statRequest->requests()->save($req);
 
-                $statRequest = new StatisticRequest();
-                $statRequest->start_date = $fromDate;
-                $statRequest->end_date = $toDate;
-                $statRequest->save();
-
-                $req->temperature = $statRequest->getMedianTemp($req);
-                $statRequest->requests()->save($req);
-
-                Session::flash('lastRequest', $fromDate);
-                Session::flash('city', $req->location); 
-                Session::flash('temp', $req->temperature); 
-            }
-            catch(\Exception $ex)
-            {
-                Session::flash('errorMsg', $ex->errorMessage());
-            }
-            finally
-            {
-                return redirect()->back();
-            }
+            return response()->json([
+                'temp' => $medianTemp,
+                'city' => $req->location,
+                'from' => $fromDate
+            ]);
+        }
+        catch(\Exception $ex)
+        {
+            return response()->json([
+                'error' => $ex
+            ]);
         }
     }
 

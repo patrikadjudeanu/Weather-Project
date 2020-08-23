@@ -59,8 +59,8 @@ class StatisticRequest extends Model
         while($carbonFromDate->lte($carbonToDate))
         {
             $totalTemp += Request::where([
-                                            ['location', '=', $this->location],
-                                            ['requestable_type', '=', 'App\Models\StatisticRequest'],
+                                            ['location', '=', $req->location],
+                                            ['requestable_type', '=', 'App\Models\TempreratureRequest'],
                                             ['created_at', '=', $carbonFromDate]
                                         ])->first()->temperature;
     

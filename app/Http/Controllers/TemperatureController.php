@@ -14,43 +14,39 @@ class TemperatureController extends Controller
         $this->middleware('auth');
     }
 
-    public function index(Request $request)
+    public function index()
     {
-        if ($request->isMethod('get'))
-            return view('temperature');
-        else if($request->isMethod('post'))
-        {
-            try
-            {
-                $latitude = request('latInput');
-                $longitude = request('lonInput');
-
-                $req = new Req();
-                $req->latitude = $latitude;
-                $req->longitude = $longitude;
-                $req->checkLocation();
-
-                $weatherData = $req->getWeatherData();
-                $req->temperature = $weatherData->temp;
-                $req->location = $weatherData->city_name . ', ' . $weatherData->country_code;
-
-                $tempRequest = new TemperatureRequest();
-                $tempRequest->save();
-                $tempRequest->requests()->save($req);
-
-
-                Session::flash('city', $req->location); 
-                Session::flash('temp', $req->temperature);
-            } 
-            catch(\Exception $ex)
-            {
-                Session::flash('errorMsg', $ex->errorMessage());
-            }
-            finally
-            {
-                return redirect()->back();
-            }
-        }
+        return view('temperature');
     }   
+
+    public function getTemperature()
+    {
+        try
+        {
+            $req = new Req();
+            $req->latitude = request('latInput');
+            $req->longitude = request('lonInput');
+            $req->checkLocation();
+
+            $data = $req->getWeatherData();
+            $req->location = $data->city_name . ', ' . $data->country_code;
+            $req->temperature = $data->temp;
+
+            $tempRequest = new TemperatureRequest();
+            $tempRequest->save();
+            $tempRequest->requests()->save($req);
+
+            return response()->json([
+                'temp' => $data->temp,
+                'city' => $data->city_name . ", " . $data->country_code
+            ]);
+        }
+        catch(\Exception $ex)
+        {
+            return response()->json([
+                'error' => true
+            ]);
+        }
+    }
 
 }
