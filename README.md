@@ -13,3 +13,5 @@ php artisan key:generate
 php artisan migrate
 #### Run the local server
 php artisan serve
+
+## For the AJAX implementation, check branch 'Alternative'.
